@@ -12,6 +12,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local default_install_tag = "tags/v0.15.0"
 
 local elixir_nvim_output_bufnr
+local is_dev = true
 
 local M = {}
 
@@ -297,7 +298,7 @@ function M.setup(opts)
       path = tostring(install_dir),
       repo = repo_options.repo,
       ref = repo_options.ref,
-      versions = Version.get(),
+      versions = Version.get(is_dev),
     }
 
     if not opts.cmd and not cmd:exists() then
@@ -317,7 +318,7 @@ function M.setup(opts)
     if root_dir then
       local log_message = vim.lsp.handlers["window/logMessage"]
       vim.lsp.start(vim.tbl_extend("keep", {
-        name = "ElixirLS",
+        name = is_dev and "elixirls-dev" or "ElixirLS",
         cmd = opts.cmd and wrap_in_table(opts.cmd) or { tostring(cmd) },
         commands = {
           ["elixir.lens.test.run"] = test,

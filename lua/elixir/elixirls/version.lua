@@ -14,7 +14,10 @@ function M.elixir_version(version_string)
   return string.match(version_string, "Elixir (%d+%.%d+%.%d+)")
 end
 
-function M.get()
+function M.get(is_dev)
+  if is_dev then
+    return "dev"
+  end
   local version_string = vim.fn.system("elixir --version")
   return string.format("%s-%s", M.elixir_version(version_string), M.erlang_version(version_string))
 end
